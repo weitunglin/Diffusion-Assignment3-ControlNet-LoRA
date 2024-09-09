@@ -3,3 +3,6 @@ task_1_controlnet/runs
 
 # Task 2
 task_2_lora/runs
+
+__pycache__/
+*.pyc
