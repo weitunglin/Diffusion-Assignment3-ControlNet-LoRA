@@ -67,6 +67,8 @@ from diffusers.utils.hub_utils import load_or_create_model_card, populate_model_
 from diffusers.utils.import_utils import is_xformers_available
 from diffusers.utils.torch_utils import is_compiled_module
 
+from utils import image_grid
+
 
 if is_wandb_available():
     import wandb
@@ -83,6 +85,7 @@ def log_validation(
     pipeline_args,
     epoch,
     is_final_validation=False,
+    save_dir=None,
 ):
     logger.info(
         f"Running validation... \n Generating {args.num_validation_images} images with prompt:"
@@ -120,6 +123,12 @@ def log_validation(
             with torch.cuda.amp.autocast():
                 image = pipeline(**pipeline_args, image=image, generator=generator).images[0]
             images.append(image)
+    
+    if save_dir is not None:
+        image_val_full = image_grid(images, len(images), 1)
+        image_val_full.save(
+            os.path.join(save_dir, f"epoch_{epoch:06d}.png")
+        )
 
     for tracker in accelerator.trackers:
         phase_name = "test" if is_final_validation else "validation"
@@ -1315,6 +1324,7 @@ def main(args):
                     accelerator,
                     pipeline_args,
                     epoch,
+                    save_dir=os.path.join(args.output_dir, "validation"),
                 )
 
     # Save the lora layers

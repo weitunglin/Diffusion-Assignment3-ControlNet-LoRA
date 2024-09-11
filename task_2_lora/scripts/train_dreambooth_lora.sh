@@ -16,6 +16,6 @@ accelerate launch --mixed_precision="no" train_dreambooth_lora.py \
   --lr_warmup_steps=0 \
   --max_train_steps=500 \
   --validation_prompt="A photo of sks cat in a bucket" \
-  --validation_epochs=50 \
+  --validation_epochs=25 \
   --checkpoints_total_limit 2 \
   --seed="0"
