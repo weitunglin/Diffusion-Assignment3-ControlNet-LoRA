@@ -10,8 +10,8 @@ accelerate launch train.py \
 --learning_rate=5e-6 \
 --validation_image "./data/conditioning_pose_1.jpg" "./data/conditioning_pose_2.jpg" \
 --validation_prompt "a man in black pants and a black shirt" "a woman standing on the beach with a red hair" \
---train_batch_size=16 \
---gradient_accumulation_steps=1 \
+--train_batch_size=8 \
+--gradient_accumulation_steps=2 \
 --gradient_checkpointing \
 --set_grads_to_none \
 --use_8bit_adam \
